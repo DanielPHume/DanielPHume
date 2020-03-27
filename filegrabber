@@ -1,0 +1,17 @@
+#!/bin/bash
+
+d=$(date '+%d_%m_%Y_%H_%M')
+f="logs"
+filename=($f$d".csv")
+dir=$(pwd)
+
+
+ssh danielh@41372lo5ext01.slough "cat /var/log/ravn-extract/application.log > $filename" ;
+
+echo "File created on apache server"
+echo $filename
+
+
+scp danielh@41372lo5ext01.slough:$filename $dir
+
+
