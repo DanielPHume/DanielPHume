@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo -e "\nInitial setup script\n"
+
+read -p "Hostname: " HOSTNAME
+read -p "IP address " IP
+
+echo $HOSTNAME > /etc/hostname
+sed -i "s/127.0.1.1.*/127.0.1.1\t$HOSTNAME/g" /etc/hosts
+echo "$HOSTNAME.slough.imanage.co.uk" > /etc/mailname
+sed -i "s/address.*/address $IP/g" /etc/network/interfaces
+
+read -p "Would you like to add the security ssh group? [y/n] " SG
+if [ "$SG" == "y" ]; then
+	sed -ie "/^+:(sysadmin):ALL/a +:($HOSTNAME):ALL " /etc/security/access.conf
+fi
+
+echo -e "Done.\n"
+exit 0
